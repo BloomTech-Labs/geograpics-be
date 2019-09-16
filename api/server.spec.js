@@ -12,3 +12,25 @@ describe("GET", () => {
       });
   });
 });
+
+describe("User CRUD", () => {
+  it("GET list of users", () => {
+    return request(server)
+      .get("/users")
+      .expect(200)
+  })
+  it("POST new User", () => {
+    return request(server)
+      .post("/users")
+      .send({access_token: "TestUser",
+      private: true,
+      insta_id: 55555,
+      username: "Test",
+      profile_pic: "",
+      full_name: "Test",
+      bio: "",
+      website: "",
+      is_business: false})
+      .expect(200)
+  })
+});
