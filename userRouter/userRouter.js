@@ -16,6 +16,7 @@ router.get("/", (req, res) => {
 });
 
 // Insert new user into DB
+// sends new user ID back
 router.post("/", (req, res) => {
   let newUserInfo = req.body;
   helper
@@ -30,6 +31,8 @@ router.post("/", (req, res) => {
 
 // Edit user info - ALL user info, must fill in all fields
 // regardless if they change or not
+//  User id sent in URL parameter
+// user data sent in body
 router.put("/:id", (req, res) => {
   let id = req.params.id;
   let editInfo = req.body;
@@ -38,7 +41,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-// Delete user
+// Delete user - id must be in URL parameter string
 router.delete("/:id", (req, res) => {
   let id = req.params.id;
   helper.deleteUser(id).then(deleted => {
