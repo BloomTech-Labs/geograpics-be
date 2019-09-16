@@ -13,14 +13,14 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './api/data/DB.db3'
+      filename: './data/DB.db3'
     },
     useNullAsDefault: true,
     migrations: {
-      directory: './api/data/migrations'
+      directory: "./data/migrations"
     },
     seeds: {
-      directory: './api/data/seeds'
+      directory: './data/seeds'
     },
     pool: {
       afterCreate: (conn, done) => {
@@ -33,10 +33,10 @@ module.exports = {
     client: 'pg',
     connection: testingDbConnection,
     migrations: {
-      directory: './api/data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: './api/data/seeds'
+      directory: './data/seeds'
     },
   },
 
@@ -44,10 +44,10 @@ module.exports = {
     client: 'pg',
     connection: stagingDbConnection,
     migrations: {
-      directory: './api/data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: './api/data/seeds'
+      directory: './data/seeds'
     },
   },
 
@@ -55,10 +55,10 @@ module.exports = {
     client: 'pg',
     connection: productionDbConnection,
     migrations: {
-      directory: './api/data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: './api/data/seeds'
+      directory: './data/seeds'
     },
   }
 
