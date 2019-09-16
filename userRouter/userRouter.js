@@ -26,6 +26,24 @@ router.post("/", (req, res)=>{
     })
 })
 
+router.put("/:id", (req, res)=>{
+    let id = req.params.id
+    let editInfo = req.body
+    helper.editUser(id, editInfo)
+    .then(edited=>{
+        res.status(200).json(edited)
+    })
+})
+
+
+router.delete("/:id", (req, res)=>{
+    let id = req.params.id
+    helper.deleteUser(id)
+    .then(deleted=>{
+        res.status(200).json(deleted)
+    })
+})
+
 
 
 module.exports = router
