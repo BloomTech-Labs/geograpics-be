@@ -1,3 +1,3 @@
 # GEOGRAPICS
 
-## Sever
+## Server
