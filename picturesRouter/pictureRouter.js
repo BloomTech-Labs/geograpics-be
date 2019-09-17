@@ -14,11 +14,11 @@ router.get("/", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ Error: "Failed to retrieve pictures" });
-    })
-})
+    });
+});
 
-// Insert new user into DB
-// sends new user ID back
+// Insert new picture into DB
+// sends new picture ID back
 router.post("/", (req, res) => {
   let newPictureInfo = req.body;
   helper
@@ -28,34 +28,37 @@ router.post("/", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ Error: "Failed to add new picture info" });
-    })
-})
+    });
+});
 
-// Edit user info - ALL user info, must fill in all fields
+// Edit picture info - ALL picture info, must fill in all fields
 // regardless if they change or not
-//  User id sent in URL parameter
-// user data sent in body
+//  picture id sent in URL parameter
+// picture data sent in body
 router.put("/:id", (req, res) => {
   let id = req.params.id;
   let editInfo = req.body;
-  helper.editPicture(id, editInfo).then(edited => {
-    res.status(200).json(edited);
-  })
-  .catch(error => {
-    res.status(500).json({ Error: "Failed to edit picture" });
-  })
-})
+  helper
+    .editPicture(id, editInfo)
+    .then(edited => {
+      res.status(200).json(edited);
+    })
+    .catch(error => {
+      res.status(500).json({ Error: "Failed to edit picture" });
+    });
+});
 
-// Delete user - id must be in URL parameter string
+// Delete picture - id must be in URL parameter string
 router.delete("/:id", (req, res) => {
   let id = req.params.id;
-  helper.deletePicture(id)
-  .then(deleted => {
-    res.status(200).json(deleted);
-  })
-  .catch(error => {
-    res.status(500).json({ Error: "Failed to delete picture" });
-  })
-})
+  helper
+    .deletePicture(id)
+    .then(deleted => {
+      res.status(200).json(deleted);
+    })
+    .catch(error => {
+      res.status(500).json({ Error: "Failed to delete picture" });
+    });
+});
 
 module.exports = router;
