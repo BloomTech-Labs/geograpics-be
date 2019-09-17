@@ -54,7 +54,7 @@ router.delete("/:id", (req, res) => {
   helper
     .deletePicture(id)
     .then(deleted => {
-      res.status(200).json(deleted);
+      res.status(201).json(deleted);
     })
     .catch(error => {
       res.status(500).json({ Error: "Failed to delete picture" });
