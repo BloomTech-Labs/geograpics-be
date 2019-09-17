@@ -51,7 +51,7 @@ router.delete("/:id", (req, res) => {
   let id = req.params.id;
   helper.deleteUser(id)
   .then(deleted => {
-    res.status(200).json(deleted);
+    res.status(201).json(deleted);
   })
   .catch(error => {
     res.status(500).json({ Error: "Failed to delete user" });
