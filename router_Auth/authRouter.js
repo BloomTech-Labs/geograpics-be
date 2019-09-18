@@ -67,7 +67,8 @@ passport.use(
           })
           .catch(err => {
             console.log(err)
-            res.status(401).json({message: "You are not Authorizated", err, req.user})
+          const test = req.user
+            res.status(401).json({message: "You are not Authorizated", err, test})
           })  
 
   })
