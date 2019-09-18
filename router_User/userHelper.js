@@ -4,12 +4,19 @@ module.exports = {
     findAllUsers,
     postNewUser,
     editUser,
-    deleteUser
+    deleteUser,
+    findUserById
 }
 
 // Retrieve all users from user table
 function findAllUsers () {
     return db("users")
+}
+
+function findUserById (id) {
+    return db("users")
+        .where('id', id)
+        .first()
 }
 
 // Insert new user into user table
