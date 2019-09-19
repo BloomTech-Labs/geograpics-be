@@ -65,13 +65,13 @@ router.get('/instagram/callback', passport.authenticate('instagram', { session: 
       console.log(req.user.insta_id)
 
       if (user.insta_id === req.user.insta_id) {
-        res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
+        res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}&userid=${user.id}`)
       } 
     })
     .catch(err => {
       helper.postNewUser(req.user)
-        .then(value => {
-          res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
+        .then(newUserID => {
+          res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}&userid=${newUserID}`)
         })
         .catch(err => {
           console.log(err)

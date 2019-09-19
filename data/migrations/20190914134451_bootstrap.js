@@ -19,7 +19,8 @@ exports.up = function(knex) {
     t.string('bio', 21000);
     t.string('website', 255);
     t.boolean('is_business')
-      .defaultTo(false);
+      .defaultTo(false)
+    t.string("email", 200).unique()
   })
   .createTable('pictures', t => {
     t.increments();
