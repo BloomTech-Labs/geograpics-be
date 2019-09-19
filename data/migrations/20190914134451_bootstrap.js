@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('users', t => {
     t.increments();
-    t.integer('insta_id')
+    t.biginteger('insta_id')
       .notNullable()
       .unique();
     t.string('access_token', 255)
@@ -24,10 +24,10 @@ exports.up = function(knex) {
   })
   .createTable('pictures', t => {
     t.increments();
-    t.integer('media_id')
+    t.biginteger('media_id')
       .notNullable()
       .unique();
-    t.integer('user_id')
+    t.biginteger('user_id')
       .notNullable()
       .unsigned()
       .references('id')
