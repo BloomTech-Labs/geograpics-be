@@ -64,7 +64,8 @@ passport.use(
         helper.postNewUser(req.user)
           .then(value => {
           const test = req.user
-            res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
+            // res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
+            res.redirect(`https://geograpics-staging.herokuapp.com/?username=${req.user.username}`)
           })
           .catch(err => {
             console.log(err)
