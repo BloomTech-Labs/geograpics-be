@@ -1,1 +1,0 @@
-https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fresponse_type%3Dcode%26redirect_uri%3Dhttps%3A//staging.geograpics.com/auth/instagram/callback%26client_id%3D983a827835f8449c9dac6c109078b66c

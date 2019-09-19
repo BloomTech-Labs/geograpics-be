@@ -27,57 +27,57 @@ const InstStrategy = require('passport-instagram').Strategy
 
 
 passport.use(
-    new InstStrategy(
-      {
-        clientID: process.env.INSTACLIENT,
-        clientSecret: process.env.INSTASECRET,
-        callbackURL: "https://geograpics-staging.herokuapp.com/auth/instagram/callback"
-      },
-      (accessToken, refreshToken, profile, done) => {
+  new InstStrategy(
+    {
+      clientID: process.env.INSTACLIENT,
+      clientSecret: process.env.INSTASECRET,
+      callbackURL: process.env.CALLBACKURL || 'http://localhost:8000/auth/instagram/callback'
+    },
+    (accessToken, refreshToken, profile, done) => {
 
-        // console.log(profile._json)
-
-        let userInfo = {
-          insta_id :        profile._json.data.id,
-          username :        profile._json.data.username,
-          profile_pic :     profile._json.data.profile_picture,
-          full_name :       profile._json.data.full_name,
-          bio :             profile._json.data.bio,
-          website :         profile._json.data.website,
-          is_business :     profile._json.data.is_business,
-          access_token:     accessToken
-        }
-
-        
-        done(null, userInfo)
+      let userInfo = {
+        insta_id: profile._json.data.id,
+        username: profile._json.data.username,
+        profile_pic: profile._json.data.profile_picture,
+        full_name: profile._json.data.full_name,
+        bio: profile._json.data.bio,
+        website: profile._json.data.website,
+        is_business: profile._json.data.is_business,
+        access_token: accessToken
       }
-      )
-      );
-      
-      
-      router.get('/instagram', passport.authenticate('instagram'));
-      
-        
-      router.get('/instagram/callback', passport.authenticate('instagram', {failureRedirect: 'https://geograpics-staging.herokuapp.com'}), (req, res) => {
-        
-        console.log('THIS IS REQ USER INFO', req.user)
 
-        const token = gentoken(req.user)
+      done(null, userInfo)
+    }
+  )
+);
 
-        res.redirect(`https://staging.geograpics.com?username=${token}`)
 
-        // helper.postNewUser(req.user)
-        //   .then(value => {
-        //   const test = req.user
-        //     // res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
-        //     res.redirect(`https://staging.geograpics.com?username=${req.user.username}`)
-        //   })
-        //   .catch(err => {
-        //     console.log(err)
-        //   const test = req.user
-        //     res.status(401).json({message: "You are not Authorizated", err, test})
-        //   })  
+router.get('/instagram', passport.authenticate('instagram'))
 
-  })
 
-  module.exports = router
+router.get('/instagram/callback', passport.authenticate('instagram', { session: false }), (req, res) => {
+
+  const token = gentoken(req.user)
+
+  helper.findUserById(req.user.insta_id)
+    .then(user => {
+      console.log(user.id)
+      console.log(req.user.insta_id)
+
+      if (user.insta_id === req.user.insta_id) {
+        res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
+      } 
+    })
+    .catch(err => {
+      helper.postNewUser(req.user)
+        .then(value => {
+          res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
+        })
+        .catch(err => {
+          console.log(err)
+          res.status(401).json({ message: "Could Not Add User" })
+        })
+    })
+})
+
+module.exports = router
