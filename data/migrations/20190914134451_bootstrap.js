@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('users', t => {
     t.increments();
-    t.biginteger('insta_id')
+    t.string('insta_id')
       .notNullable()
       .unique();
     t.string('access_token', 255)
@@ -15,8 +15,7 @@ exports.up = function(knex) {
       .notNullable()
       .unique();
     t.string('profile_pic');
-    t.string('full_name')
-      .notNullable();
+    t.string('full_name');
     t.string('bio', 21000);
     t.string('website', 255);
     t.boolean('is_business')
