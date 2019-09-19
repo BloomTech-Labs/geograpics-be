@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router()
 require('dotenv').config()
 const helper = require("../router_User/userHelper");
+const gentoken = require('../security/gen-token')
 
 // server route = /auth
 
@@ -9,20 +10,20 @@ const helper = require("../router_User/userHelper");
 const passport = require('passport')
 const InstStrategy = require('passport-instagram').Strategy
 
-passport.serializeUser(function(userInfo, done) {
-  done(null, userInfo);
-});
+// passport.serializeUser(function(userInfo, done) {
+//   done(null, userInfo);
+// });
 
-passport.deserializeUser(function(userInfo, done) {
-  // helper.findUserById(id)
-  //   .then(user => {
-  //     done(null, user) 
-  //   })  
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
-  done(null, userInfo)
-})
+// passport.deserializeUser(function(userInfo, done) {
+//   // helper.findUserById(id)
+//   //   .then(user => {
+//   //     done(null, user) 
+//   //   })  
+//   //   .catch(err => {
+//   //     console.log(err)
+//   //   })
+//   done(null, userInfo)
+// })
 
 
 passport.use(
@@ -61,17 +62,21 @@ passport.use(
         
         console.log('THIS IS REQ USER INFO', req.user)
 
-        helper.postNewUser(req.user)
-          .then(value => {
-          const test = req.user
-            // res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
-            res.redirect(`https://staging.geograpics.com?username=${req.user.username}`)
-          })
-          .catch(err => {
-            console.log(err)
-          const test = req.user
-            res.status(401).json({message: "You are not Authorizated", err, test})
-          })  
+        const token = gentoken(req.user)
+
+        res.redirect(`https://staging.geograpics.com?username=${token}`)
+
+        // helper.postNewUser(req.user)
+        //   .then(value => {
+        //   const test = req.user
+        //     // res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
+        //     res.redirect(`https://staging.geograpics.com?username=${req.user.username}`)
+        //   })
+        //   .catch(err => {
+        //     console.log(err)
+        //   const test = req.user
+        //     res.status(401).json({message: "You are not Authorizated", err, test})
+        //   })  
 
   })
 
