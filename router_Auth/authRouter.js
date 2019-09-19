@@ -31,7 +31,7 @@ passport.use(
       {
         clientID: process.env.INSTACLIENT,
         clientSecret: process.env.INSTASECRET,
-        callbackURL: "https://staging.geograpics.com/auth/instagram/callback"
+        callbackURL: "https://geograpics-staging.herokuapp.com/auth/instagram/callback"
       },
       (accessToken, refreshToken, profile, done) => {
 
