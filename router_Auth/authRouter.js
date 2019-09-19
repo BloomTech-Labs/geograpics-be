@@ -63,7 +63,8 @@ passport.use(
 
         helper.postNewUser(req.user)
           .then(value => {
-            res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!"})
+          const test = req.user
+            res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
           })
           .catch(err => {
             console.log(err)
