@@ -15,8 +15,8 @@ function findAllUsers () {
 
 function findUserById (id) {
     return db("users")
-        .where('id', id)
-        .first()
+        .where({ insta_id: id })
+        .first();
 }
 
 // Insert new user into user table
