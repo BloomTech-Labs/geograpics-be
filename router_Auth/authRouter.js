@@ -30,7 +30,7 @@ passport.use(
       {
         clientID: process.env.INSTACLIENT,
         clientSecret: process.env.INSTASECRET,
-        callbackURL: "https://geograpics-staging.herokuapp.com/auth/instagram/callback"
+        callbackURL: "https://staging.geograpics.com/auth/instagram/callback"
       },
       (accessToken, refreshToken, profile, done) => {
 
@@ -65,7 +65,7 @@ passport.use(
           .then(value => {
           const test = req.user
             // res.status(201).json({ message: "You have Been Authenticated!!! Hooraay!!", test})
-            res.redirect(`https://www.geograpics.com?username=${req.user.username}`)
+            res.redirect(`https://staging.geograpics.com?username=${req.user.username}`)
           })
           .catch(err => {
             console.log(err)
