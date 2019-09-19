@@ -37,7 +37,7 @@ passport.use(
         // console.log(profile._json)
 
         let userInfo = {
-          insta_id :        parseInt(profile._json.data.id),
+          insta_id :        profile._json.data.id,
           username :        profile._json.data.username,
           profile_pic :     profile._json.data.profile_picture,
           full_name :       profile._json.data.full_name,
