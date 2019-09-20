@@ -68,7 +68,7 @@ router.get('/instagram/callback', passport.authenticate('instagram', { session: 
         res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
       } 
     })
-    .catch(err => {
+    .catch(err => { 
       helper.postNewUser(req.user)
         .then(value => {
           res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
