@@ -78,16 +78,25 @@ router.get(
         // If user does not exist in the users table, they're automatically added by helper.postNewUser
         // This works because this is only triggered after Instagram & passport verify the user - they wouldn't hit 
         // this function unless they were already an Instagram user
+
+        //  Problem: Front end needs the newUserID/primary key
+        // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't, 
+        // it sends back an object-object full of data about what the server just did, such as SQL Inster, 
+        // number of rows added, and date of addition - generally useless
+
+        //  So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
         helper
           .postNewUser(req.user)
           .then(newUserID => {
             helper
               .findUserById(req.user.insta_id)
               .then(newUser => {
-                res.status(200).json(newUser)
-                // res.redirect(
-                //   `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUser.id}`
-                // );  
+                res.redirect(
+                  `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUser.id}`
+                );  
+              })
+              .catch(err => {
+                res.status(500).json({Error: "Added user, but could not find them in the database"})
               })
           })
           .catch(err => {
