@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
             console.log('WTF')
             res.status(401).json({ message: 'Invalid Token' })
         } else {
-            req.loggedInId = decodedToken.subject
+            req.loggedInUsername = decodedToken.username
             next()
         }
       })        

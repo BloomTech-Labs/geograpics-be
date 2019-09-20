@@ -3,8 +3,9 @@ require('dotenv').config()
 
 
 module.exports = function generateToken(user) {
+  console.log("this is user", user)
     const payload = {
-      subject: user.id, 
+      subject: user.insta_id, 
       username: user.username,
     };
 
