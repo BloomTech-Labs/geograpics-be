@@ -65,23 +65,22 @@ router.get(
       .findUserById(req.user.insta_id)
       // If user is found, user object return is that users entire row from the users table
       .then(user => {
-        console.log(user.id);
-        console.log(req.user.insta_id);
         // If user exists, the insta_id on the req body will match the insta_id from the users table
+        // and redirect them to the dashboard
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-            `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${user.id}`
+            `https://staging.geograpics.com/dashboard?token=${token}&username=${req.user.username}&userid=${user.id}`
           );
         }
       })
       .catch(err => {
         // If user does not exist in the users table, they're automatically added by helper.postNewUser
-        // This works because this is only triggered after Instagram & passport verify the user - they wouldn't hit 
+        // This works because this is only triggered after Instagram & passport verify the user - they wouldn't hit
         // this function unless they were already an Instagram user
 
         //  Problem: Front end needs the newUserID/primary key
-        // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't, 
-        // it sends back an object-object full of data about what the server just did, such as SQL Inster, 
+        // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't,
+        // it sends back an object-object full of data about what the server just did, such as SQL Inster,
         // number of rows added, and date of addition - generally useless
 
         //  So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
@@ -93,11 +92,15 @@ router.get(
               .then(newUser => {
                 res.redirect(
                   `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUser.id}`
-                );  
+                );
               })
               .catch(err => {
-                res.status(500).json({Error: "Added user, but could not find them in the database"})
-              })
+                res
+                  .status(500)
+                  .json({
+                    Error: "Added user, but could not find them in the database"
+                  });
+              });
           })
           .catch(err => {
             console.log(err);
@@ -107,4 +110,4 @@ router.get(
   }
 );
 
-module.exports = router
+module.exports = router;
