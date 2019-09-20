@@ -4,11 +4,13 @@ const helper = require("./pictureHelper");
 
 // server route = /map
 
-// Retrieve list of all users
+// Get All Pictures of Logged In User
 // Comment out before production
 router.get("/", (req, res) => {
+  loggedInId = req.loggedInId
+
   helper
-    .findAllPictures()
+    .getPictures(loggedInId)
     .then(pictures => {
       res.status(200).json(pictures);
     })

@@ -5,6 +5,7 @@ require('dotenv').config()
 
 const cors = require("cors");
 const helmet = require("helmet");
+const tokenCheck = require('../middleware/auth-middleware')
 
 //session
 const sessionConfig = require('../config/session-config')
@@ -36,8 +37,8 @@ server.use(passport.session())
 
 // End passport setup
 
-server.use("/users", userRouter);
-server.use("/map", pictureRouter);
+server.use("/users", tokenCheck, userRouter);
+server.use("/map", tokenCheck, pictureRouter);
 server.use("/auth", authRouter)
 
 server.get("/", (req, res) => {
