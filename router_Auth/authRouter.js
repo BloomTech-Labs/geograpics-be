@@ -30,8 +30,7 @@ passport.use(
     {
       clientID: process.env.INSTACLIENT,
       clientSecret: process.env.INSTASECRET,
-      callbackURL:
-        "http://localhost:8000/auth/instagram/callback"
+      callbackURL: process.env.CALLBACKURL
     },
     (accessToken, refreshToken, profile, done) => {
       // Changing data object returned by Instagram into something our db can understand
