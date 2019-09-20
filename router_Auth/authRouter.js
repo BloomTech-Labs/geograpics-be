@@ -81,11 +81,14 @@ router.get(
         helper
           .postNewUser(req.user)
           .then(newUserID => {
-            console.log(newUserID)
-            res.status(200).json(newUserID)
-            // res.redirect(
-            //   `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUserID}`
-            // );
+            helper
+              .findUserById(req.user.insta_id)
+              .then(newUser => {
+                res.status(200).json(newUser)
+                // res.redirect(
+                //   `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUser.id}`
+                // );  
+              })
           })
           .catch(err => {
             console.log(err);
