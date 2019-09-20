@@ -31,7 +31,7 @@ passport.use(
       clientID: process.env.INSTACLIENT,
       clientSecret: process.env.INSTASECRET,
       callbackURL:
-        "https://geograpics-staging.herokuapp.com/auth/instagram/callback"
+        "http://localhost:8000/auth/instagram/callback"
     },
     (accessToken, refreshToken, profile, done) => {
       // Changing data object returned by Instagram into something our db can understand
@@ -82,9 +82,11 @@ router.get(
         helper
           .postNewUser(req.user)
           .then(newUserID => {
-            res.redirect(
-              `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUserID}`
-            );
+            console.log(newUserID)
+            res.status(200).json(newUserID)
+            // res.redirect(
+            //   `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUserID}`
+            // );
           })
           .catch(err => {
             console.log(err);
