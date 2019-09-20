@@ -71,7 +71,7 @@ router.get(
         // If user exists, the insta_id on the req body will match the insta_id from the users table
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-            `https://staging.geograpics.com?token=${token}&username=${req.user.username}&userid=${user.id}`
+            `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${user.id}`
           );
         }
       })
@@ -83,7 +83,7 @@ router.get(
           .postNewUser(req.user)
           .then(newUserID => {
             res.redirect(
-              `https://staging.geograpics.com?token=${token}&username=${req.user.username}&userid=${newUserID}`
+              `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUserID}`
             );
           })
           .catch(err => {
@@ -94,36 +94,4 @@ router.get(
   }
 );
 
-<<<<<<< HEAD
-router.get('/instagram', passport.authenticate('instagram'))
-
-
-router.get('/instagram/callback', passport.authenticate('instagram', { session: false }), (req, res) => {
-
-  const token = gentoken(req.user)
-
-  helper.findUserById(req.user.insta_id)
-    .then(user => {
-      console.log(user.id)
-      console.log(req.user.insta_id)
-
-      if (user.insta_id === req.user.insta_id) {
-        res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
-      } 
-    })
-    .catch(err => { 
-      helper.postNewUser(req.user)
-        .then(value => {
-          res.redirect(`https://staging.geograpics.com?token=${token}&username=${req.user.username}`)
-        })
-        .catch(err => {
-          console.log(err)
-          res.status(401).json({ message: "Could Not Add User" })
-        })
-    })
-})
-
 module.exports = router
-=======
-module.exports = router;
->>>>>>> dafa15f80fd14434ef1bef63ea16d4c3a7993c90
