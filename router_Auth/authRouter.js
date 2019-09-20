@@ -68,7 +68,7 @@ router.get(
         // it sends back an object-object full of data about what the server just did, such as SQL Inster,
         // number of rows added, and date of addition - generally useless
 
-        //  So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
+        //  Solution: So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
         helper
           .postNewUser(req.user)
           .then(newUserID => {
