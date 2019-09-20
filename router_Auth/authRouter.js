@@ -65,7 +65,7 @@ router.get(
 
         //  Problem: Front end needs the newUserID/primary key
         // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't,
-        // it sends back an object-object full of data about what the server just did, such as SQL Inster,
+        // it sends back an object-object full of data about what the server just did, such as SQL Insert,
         // number of rows added, and date of addition - generally useless
 
         //  Solution: So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
