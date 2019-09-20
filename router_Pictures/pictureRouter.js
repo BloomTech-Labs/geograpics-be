@@ -1,30 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const helper = require("./pictureHelper");
-const userHelper = require("../router_User/userHelper")
+const userHelper = require("../router_User/userHelper");
 
 // server route = /map
 
 // Get All Pictures of Logged In User
 // Comment out before production
 router.get("/", (req, res) => {
-  loggedInUsername = req.loggedInUsername
+  loggedInUsername = req.loggedInUsername;
   userHelper
-  .findUserByUsername(loggedInUsername)
-  .then(user =>{
-    helper
-    .getPictures(user.id)
-    .then(pictures => {
-      res.status(200).json(pictures);
+    .findUserByUsername(loggedInUsername)
+    .then(user => {
+      helper
+        .getPictures(user.id)
+        .then(pictures => {
+          res.status(200).json(pictures);
+        })
+        .catch(error => {
+          res.status(500).json({ Error: "Failed to retrieve pictures" });
+        });
     })
     .catch(error => {
-      res.status(500).json({ Error: "Failed to retrieve pictures"});
+      res.status(500).json({ Error: "Failed to find user" });
     });
-  })
-  .catch(error =>{
-    res.status(500).json({Error: "Failed to find user"})
-  })
-  
 });
 
 // Insert new picture into DB

@@ -15,8 +15,7 @@ function findAllPictures() {
 
 // Retrieve all pictures for Certain user
 function getPictures(userId) {
-  return db("pictures")
-  .where('user_id', userId)
+  return db("pictures").where("user_id", userId);
 }
 
 // Insert new picture into user table

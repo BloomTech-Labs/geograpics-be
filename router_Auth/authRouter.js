@@ -10,21 +10,6 @@ const gentoken = require("../security/gen-token");
 const passport = require("passport");
 const InstStrategy = require("passport-instagram").Strategy;
 
-// passport.serializeUser(function(userInfo, done) {
-//   done(null, userInfo);
-// });
-
-// passport.deserializeUser(function(userInfo, done) {
-//   // helper.findUserById(id)
-//   //   .then(user => {
-//   //     done(null, user)
-//   //   })
-//   //   .catch(err => {
-//   //     console.log(err)
-//   //   })
-//   done(null, userInfo)
-// })
-
 passport.use(
   new InstStrategy(
     {
@@ -95,15 +80,12 @@ router.get(
                 );
               })
               .catch(err => {
-                res
-                  .status(500)
-                  .json({
-                    Error: "Added user, but could not find them in the database"
-                  });
+                res.status(500).json({
+                  Error: "Added user, but could not find them in the database"
+                });
               });
           })
           .catch(err => {
-            console.log(err);
             res.status(401).json({ message: "Could Not Add User" });
           });
       });
