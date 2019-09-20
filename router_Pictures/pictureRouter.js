@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
       res.status(200).json(pictures);
     })
     .catch(error => {
-      res.status(500).json({ Error: "Failed to retrieve pictures" });
+      res.status(500).json({ Error: "Failed to retrieve pictures", error, loggedInId });
     });
 });
 
