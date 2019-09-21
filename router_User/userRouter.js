@@ -39,7 +39,7 @@ router.put("/:id", (req, res) => {
   let id = req.params.id;
   let editInfo = req.body;
   helper.editUser(id, editInfo).then(edited => {
-    res.status(200).json(edited);
+    res.status(200).json({editedUser: editInfo, token: token});
   })
   .catch(error => {
     res.status(500).json({ Error: "Failed to edit user" });

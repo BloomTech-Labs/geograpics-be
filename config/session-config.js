@@ -1,5 +1,5 @@
 module.exports = sessionOptions = {
-    name: 'auth-users',
+    name: 'auth-users-test',
     secret: process.env.COOKIE_SECRET || 'keep it funny', // for encryption
     cookie: {
         secure: false, // HTTP or HTTPs

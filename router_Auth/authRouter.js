@@ -70,7 +70,7 @@ router.get(
         // If user exists, the insta_id on the req body will match the insta_id from the users table
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-            `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${user.id}`
+            `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${user.id}`
           );
         }
       })
