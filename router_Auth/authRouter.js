@@ -10,21 +10,6 @@ const gentoken = require("../security/gen-token");
 const passport = require("passport");
 const InstStrategy = require("passport-instagram").Strategy;
 
-// passport.serializeUser(function(userInfo, done) {
-//   done(null, userInfo);
-// });
-
-// passport.deserializeUser(function(userInfo, done) {
-//   // helper.findUserById(id)
-//   //   .then(user => {
-//   //     done(null, user)
-//   //   })
-//   //   .catch(err => {
-//   //     console.log(err)
-//   //   })
-//   done(null, userInfo)
-// })
-
 passport.use(
   new InstStrategy(
     {
@@ -65,26 +50,29 @@ router.get(
       .findUserById(req.user.insta_id)
       // If user is found, user object return is that users entire row from the users table
       .then(user => {
-        console.log(user.id);
-        console.log(req.user.insta_id);
         // If user exists, the insta_id on the req body will match the insta_id from the users table
+        // and redirect them to the dashboard
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
+<<<<<<< HEAD
             `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${user.id}`
+=======
+            `https://staging.geograpics.com/dashboard?token=${token}&username=${req.user.username}&userid=${user.id}`
+>>>>>>> 6f8e1ec7b06837caaa131f167b5d5517de569a8a
           );
         }
       })
       .catch(err => {
         // If user does not exist in the users table, they're automatically added by helper.postNewUser
-        // This works because this is only triggered after Instagram & passport verify the user - they wouldn't hit 
+        // This works because this is only triggered after Instagram & passport verify the user - they wouldn't hit
         // this function unless they were already an Instagram user
 
         //  Problem: Front end needs the newUserID/primary key
-        // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't, 
-        // it sends back an object-object full of data about what the server just did, such as SQL Inster, 
+        // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't,
+        // it sends back an object-object full of data about what the server just did, such as SQL Insert,
         // number of rows added, and date of addition - generally useless
 
-        //  So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
+        //  Solution: So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
         helper
           .postNewUser(req.user)
           .then(newUserID => {
@@ -93,18 +81,19 @@ router.get(
               .then(newUser => {
                 res.redirect(
                   `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUser.id}`
-                );  
+                );
               })
               .catch(err => {
-                res.status(500).json({Error: "Added user, but could not find them in the database"})
-              })
+                res.status(500).json({
+                  Error: "Added user, but could not find them in the database"
+                });
+              });
           })
           .catch(err => {
-            console.log(err);
             res.status(401).json({ message: "Could Not Add User" });
           });
       });
   }
 );
 
-module.exports = router
+module.exports = router;
