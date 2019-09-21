@@ -54,11 +54,7 @@ router.get(
         // and redirect them to the dashboard
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-<<<<<<< HEAD
             `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${user.id}`
-=======
-            `https://staging.geograpics.com/dashboard?token=${token}&username=${req.user.username}&userid=${user.id}`
->>>>>>> 6f8e1ec7b06837caaa131f167b5d5517de569a8a
           );
         }
       })
