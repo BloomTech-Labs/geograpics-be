@@ -76,7 +76,7 @@ router.get(
               .findUserById(req.user.insta_id)
               .then(newUser => {
                 res.redirect(
-                  `https://staging.geograpics.com/register/2?token=${token}&username=${req.user.username}&userid=${newUser.id}`
+                  `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}`
                 );
               })
               .catch(err => {
