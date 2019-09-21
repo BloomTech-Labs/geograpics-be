@@ -54,7 +54,7 @@ router.get(
         // and redirect them to the dashboard
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-            `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${user.id}`
+            `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabase=true`
           );
         }
       })
@@ -76,7 +76,7 @@ router.get(
               .findUserById(req.user.insta_id)
               .then(newUser => {
                 res.redirect(
-                  `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}`
+                  `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabase=false`
                 );
               })
               .catch(err => {
