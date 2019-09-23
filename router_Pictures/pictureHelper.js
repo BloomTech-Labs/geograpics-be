@@ -4,12 +4,18 @@ module.exports = {
   findAllPictures,
   postNewPictureInfo,
   editPicture,
-  deletePicture
+  deletePicture,
+  getPictures
 };
 
 // Retrieve all pictures from user table
 function findAllPictures() {
   return db("pictures");
+}
+
+// Retrieve all pictures for Certain user
+function getPictures(userId) {
+  return db("pictures").where("user_id", userId);
 }
 
 // Insert new picture into user table
