@@ -45,6 +45,7 @@ router.get(
   passport.authenticate("instagram", { session: false }),
   (req, res) => {
     const token = gentoken(req.user);
+    console.log(token)
     // helper.findUserById queries db to check and see if user exists
     helper
       .findUserById(req.user.insta_id)
@@ -54,7 +55,7 @@ router.get(
         // and redirect them to the dashboard
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-            `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabase=true`
+            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabase=true`
           );
         }
       })
@@ -76,7 +77,7 @@ router.get(
               .findUserById(req.user.insta_id)
               .then(newUser => {
                 res.redirect(
-                  `https://staging.geograpics.com/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabase=false`
+                  `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabase=false`
                 );
               })
               .catch(err => {
