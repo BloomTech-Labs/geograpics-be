@@ -1,5 +1,4 @@
 const express = require("express");
-const session = require("express-session");
 const axios = require("axios");
 require('dotenv').config()
 
@@ -8,7 +7,6 @@ const helmet = require("helmet");
 const tokenCheck = require('../middleware/auth-middleware')
 
 //session
-const sessionConfig = require('../config/session-config')
 
 const userRouter = require("../router_User/userRouter");
 const pictureRouter = require("../router_Pictures/pictureRouter");
@@ -29,11 +27,6 @@ server.use(cors());
 server.use(express.static(__dirname + "/public"));
 
 server.set("view engine", "pug");
-
-server.use(session(sessionConfig));
-
-server.use(passport.initialize())
-server.use(passport.session())
 
 // End passport setup
 
