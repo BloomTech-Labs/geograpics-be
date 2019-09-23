@@ -53,9 +53,16 @@ router.get(
       .then(user => {
         // If user exists, the insta_id on the req body will match the insta_id from the users table
         // and redirect them to the dashboard
+
+              //     Exists in DB                       Has Email
+              //Need to add to logic below --> && user.email !== null
         if (user.insta_id === req.user.insta_id) {
           res.redirect(
-            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabase=true`
+            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=true`
+          );
+        }else{
+          res.redirect(
+            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabaseHaveEmail=false`
           );
         }
       })
@@ -77,7 +84,7 @@ router.get(
               .findUserById(req.user.insta_id)
               .then(newUser => {
                 res.redirect(
-                  `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabase=false`
+                  `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabaseHaveEmail=false`
                 );
               })
               .catch(err => {
@@ -86,6 +93,7 @@ router.get(
                 });
               });
           })
+          //If this is hit, attempted to add user, but could not add. User was originally not in the DB otherwise .catch() on line 66 would not have triggered
           .catch(err => {
             res.status(401).json({ message: "Could Not Add User" });
           });
