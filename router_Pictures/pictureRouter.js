@@ -5,23 +5,23 @@ const userHelper = require("../router_User/userHelper");
 
 // server route = /map
 
-router.get("/", (req, res) => {
+router.get("/",  async (req, res) => {
   loggedInUsername = req.loggedInUsername;
-  userHelper
-    .findUserByUsername(loggedInUsername)
-    .then(user => {
-      helper
-        .getPictures(user.id)
-        .then(pictures => {
-          res.status(200).json(pictures);
-        })
-        .catch(error => {
-          res.status(500).json({ Error: "Failed to retrieve pictures" });
-        });
-    })
-    .catch(error => {
-      res.status(500).json({ Error: "Failed to find user" });
-    });
+
+  try {
+    const user = await userHelper.findUserByUsername(loggedInUsername)
+    const pictures = await helper.getPictures(user.id)
+    const nested = {...user, pictures: pictures}
+
+    if(user.length === 0) {
+      res.status(404).json({ message: "Failed to find user"})
+    } else {
+        res.status(200).json(nested)
+    }
+
+  } catch (err) {
+    res.status(500).json({ message: "Failed to retrieve pictures" })
+  }
 });
 
 // Insert new picture into DB

@@ -5,7 +5,8 @@ module.exports = {
   postNewPictureInfo,
   editPicture,
   deletePicture,
-  getPictures
+  getPictures,
+  getPicsWithUserInfo
 };
 
 // Retrieve all pictures from user table
@@ -16,6 +17,11 @@ function findAllPictures() {
 // Retrieve all pictures for Certain user
 function getPictures(userId) {
   return db("pictures").where("user_id", userId);
+}
+
+//Retrieve all pictures and nested userObject
+function getPicsWithUserInfo() {
+  
 }
 
 // Insert new picture into user table
