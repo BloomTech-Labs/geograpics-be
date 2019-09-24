@@ -1,7 +1,7 @@
 const db = require("../data/config");
 
 module.exports = {
-  findAllUsers,
+  // findAllUsers,
   postNewUser,
   editUser,
   deleteUser,
