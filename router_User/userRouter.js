@@ -6,16 +6,16 @@ const helper = require("./userHelper");
 
 // Retrieve list of all users
 // Comment out before production
-router.get("/", (req, res) => {
-  helper
-    .findAllUsers()
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(error => {
-      res.status(500).json({ Error: "Failed to retrieve users" });
-    });
-});
+// router.get("/", (req, res) => {
+//   helper
+//     .findAllUsers()
+//     .then(users => {
+//       res.status(200).json(users);
+//     })
+//     .catch(error => {
+//       res.status(500).json({ Error: "Failed to retrieve users" });
+//     });
+// });
 
 // Insert new user into DB
 // sends new user ID back
