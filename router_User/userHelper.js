@@ -10,9 +10,9 @@ module.exports = {
 };
 
 // Retrieve all users from user table
-function findAllUsers() {
-  return db("users");
-}
+// function findAllUsers() {
+//   return db("users");
+// }
 
 function findUserById(id) {
   return db("users")

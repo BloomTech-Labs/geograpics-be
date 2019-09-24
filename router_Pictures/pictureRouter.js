@@ -5,8 +5,6 @@ const userHelper = require("../router_User/userHelper");
 
 // server route = /map
 
-// Get All Pictures of Logged In User
-// Comment out before production
 router.get("/", (req, res) => {
   loggedInUsername = req.loggedInUsername;
   userHelper
