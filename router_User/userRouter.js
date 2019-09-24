@@ -6,16 +6,16 @@ const helper = require("./userHelper");
 
 // Retrieve list of all users
 // Comment out before production
-router.get("/", (req, res) => {
-  helper
-    .findAllUsers()
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(error => {
-      res.status(500).json({ Error: "Failed to retrieve users" });
-    })
-})
+// router.get("/", (req, res) => {
+//   helper
+//     .findAllUsers()
+//     .then(users => {
+//       res.status(200).json(users);
+//     })
+//     .catch(error => {
+//       res.status(500).json({ Error: "Failed to retrieve users" });
+//     });
+// });
 
 // Insert new user into DB
 // sends new user ID back
@@ -28,8 +28,8 @@ router.post("/", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ Error: "Failed to add new user" });
-    })
-})
+    });
+});
 
 // Edit user info - ALL user info, must fill in all fields
 // regardless if they change or not
@@ -38,24 +38,27 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
   let id = req.params.id;
   let editInfo = req.body;
-  helper.editUser(id, editInfo).then(edited => {
-    res.status(200).json(edited);
-  })
-  .catch(error => {
-    res.status(500).json({ Error: "Failed to edit user" });
-  })
-})
+  helper
+    .editUser(id, editInfo)
+    .then(edited => {
+      res.status(200).json(edited);
+    })
+    .catch(error => {
+      res.status(500).json({ Error: "Failed to edit user" });
+    });
+});
 
 // Delete user - id must be in URL parameter string
 router.delete("/:id", (req, res) => {
   let id = req.params.id;
-  helper.deleteUser(id)
-  .then(deleted => {
-    res.status(201).json(deleted);
-  })
-  .catch(error => {
-    res.status(500).json({ Error: "Failed to delete user" });
-  })
-})
+  helper
+    .deleteUser(id)
+    .then(deleted => {
+      res.status(201).json(deleted);
+    })
+    .catch(error => {
+      res.status(500).json({ Error: "Failed to delete user" });
+    });
+});
 
 module.exports = router;

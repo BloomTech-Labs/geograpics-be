@@ -9,7 +9,8 @@ exports.seed = function(knex, Promise) {
       full_name: "Joseph Garcia",
       bio: "",
       website: "",
-      is_business: false
+      is_business: false,
+      email: "asdf1@asdf.com"
     },
     {
       access_token: "blahblah1",
@@ -20,7 +21,8 @@ exports.seed = function(knex, Promise) {
       full_name: "Anthony Piazza",
       bio: "",
       website: "",
-      is_business: false
+      is_business: false,
+      email: "asdf2@asdf.com"
     },
     {
       access_token: "blahblah2",
@@ -31,7 +33,8 @@ exports.seed = function(knex, Promise) {
       full_name: "Benjamin Peck",
       bio: "",
       website: "",
-      is_business: false
+      is_business: false,
+      email: "asdf3@asdf.com"
     },
     {
       access_token: "blahblah3",
@@ -42,7 +45,8 @@ exports.seed = function(knex, Promise) {
       full_name: "Dustin Hamano",
       bio: "",
       website: "",
-      is_business: false
+      is_business: false,
+      email: "asdf4@asdf.com"
     },
   ])
 }
