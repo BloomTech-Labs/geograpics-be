@@ -3,8 +3,8 @@ exports.seed = function(knex, Promise) {
     {
       media_id: 22721881,
       user_id: 9,
-      longitude: 33.9650947,
-      latitude: -118.3852043,
+      longitude: -118.3852043,
+      latitude: 33.9650947,
       thumbnail: "https://i.ibb.co/qR7ST7G/image.png",
       standard_resolution: "https://i.ibb.co/mHbjfbs/image.png",
       created_time: 1279340983,
@@ -14,8 +14,8 @@ exports.seed = function(knex, Promise) {
     {
       media_id: 22721882,
       user_id: 12,
-      longitude: 34.0058262,
-      latitude: -118.3629714,
+      longitude: -118.3629714,
+      latitude: 34.0058262,
       thumbnail: "https://i.ibb.co/qR7ST7G/image.png",
       standard_resolution: "https://i.ibb.co/mHbjfbs/image.png",
       created_time: 1279340983,
@@ -47,8 +47,8 @@ exports.seed = function(knex, Promise) {
     {
       media_id: 22721885,
       user_id: 13,
-      longitude: 37.778720183610183,
-      latitude: -122.3962783813477,
+      longitude: -122.3962783813477,
+      latitude: 37.778720183610183,
       thumbnail: "https://i.ibb.co/qR7ST7G/image.png",
       standard_resolution: "https://i.ibb.co/mHbjfbs/image.png",
       created_time: 1279340983,
