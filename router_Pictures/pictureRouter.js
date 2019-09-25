@@ -136,7 +136,7 @@ router.put("/:id", (req, res) => {
 });
 
 // Delete picture - id must be in URL parameter string
-router.delete("/refresh/", async (req, res) => {
+router.delete("/refresh/", async (req, resDelToClient) => {
   loggedInUsername = req.loggedInUsername;
 
   try {
@@ -176,7 +176,7 @@ router.delete("/refresh/", async (req, res) => {
         );
 
         if (filteredArray.length === 0) {
-          resToClient.status(400).json({
+          resDelToClient.status(400).json({
             message: "User Doesn't Have any Geo-Location Data --- Sorry!"
           });
         } else {
@@ -184,12 +184,12 @@ router.delete("/refresh/", async (req, res) => {
           helper
             .postNewPictureInfo(filteredArray)
             .then(value => {
-              resToClient
+              resDelToClient
                 .status(201)
                 .json({ ...user, pictures: filteredArray });
             })
             .catch(err => {
-              resToClient.status(400).json({ message: "Failure" });
+              resDelToClient.status(400).json({ message: "Failure" });
             });
         }
       })
@@ -209,7 +209,7 @@ router.delete("/refresh/", async (req, res) => {
     // }
   } catch (err) {
     // .catch for the router.get request
-    resToClient.status(500).json({ message: "Failed to retrieve pictures" });
+    resDelToClient.status(500).json({ message: "Failed to retrieve pictures" });
   }
 });
 
