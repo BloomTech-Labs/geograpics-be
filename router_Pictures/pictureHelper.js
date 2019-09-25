@@ -35,8 +35,8 @@ function editPicture(picID, changePicture) {
     .update(changePicture);
 }
 
-function deletePicture(picID) {
+function deletePicture(userID) {
   return db("pictures")
-    .where({ id: picID })
+    .where({ user_id: userID })
     .del();
 }
