@@ -8,7 +8,6 @@ const axios = require('axios')
 
 router.get("/",  async (req, resToClient) => {
   loggedInUsername = req.loggedInUsername;
-  console.log("Above the Try")
 
   try {
     // search users table by Insta username (done)
@@ -40,12 +39,13 @@ router.get("/",  async (req, resToClient) => {
 
           if (filteredArray.length === 0){
             resToClient.status(400).json({message: "User Doesn't Have any Geo-Location Data --- Sorry!"})
-          } else {
+          } 
+          else {
               // insert pic data into Picture Table 
               helper.postNewPictureInfo(filteredArray)
               .then (value => {
                 console.log(value)
-                resToClient.status(201).json({message: "Success"})
+                resToClient.status(201).json({...user, pictures: filteredArray})
               })
               .catch(err => {
                 console.log(err)
@@ -56,8 +56,6 @@ router.get("/",  async (req, resToClient) => {
         .catch(err => {
           console.log(err)
         })
-
-        console.log(finalArray)
 
 
     // const pictures = await helper.getPictures(user.id)
