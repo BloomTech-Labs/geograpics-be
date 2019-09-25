@@ -2,26 +2,63 @@ const express = require("express");
 const router = express.Router();
 const helper = require("./pictureHelper");
 const userHelper = require("../router_User/userHelper");
+const axios = require('axios')
 
 // server route = /map
 
 router.get("/",  async (req, res) => {
   loggedInUsername = req.loggedInUsername;
+  console.log("Above the Try")
 
   try {
+    // search users table by Insta username (done)
     const user = await userHelper.findUserByUsername(loggedInUsername)
-    const pictures = await helper.getPictures(user.id)
-    const nested = {...user, pictures: pictures}
 
-    if(user.length === 0) {
-      res.status(404).json({ message: "Failed to find user"})
-    } else {
-        res.status(200).json(nested)
-    }
+    // get accesscode for user 
+    const accesscode = user.access_token 
+
+    // api to Instagram endpoint w/access code
+      axios.get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`)
+        .then(res => {
+          // console.log("This is the Response", res.data)
+          let data = res.data.data
+          const newPictureArray = data.map(picture => {
+            return newPicObject = {
+              media_id: picture.id,
+              user_id: user.id,
+              longitude: !picture.location ? 'absent': picture.location.longitude,
+              latitude: !picture.location ? 'absent' : picture.location.latitude,
+              thumbnail: picture.images.thumbnail.url,
+              standard_resolution: picture.images.standard_resolution.url,
+              created_time: picture.created_time,
+              caption: picture.caption.text,
+              likes: picture.likes.count
+            }
+          })
+          console.log("This is the New Array of Picture Objects", newPictureArray)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    // insert pic data into Picture Table 
+      // helper.postNewPictureInfo(newPicInfo, user.id)
+
+
+    // const pictures = await helper.getPictures(user.id)
+    // const nested = {...user, pictures: pictures}
+
+    // if(user.length === 0) {
+    //   res.status(404).json({ message: "Failed to find user"})
+    // } else {
+    //     res.status(200).json(nested)
+    // }
 
   } catch (err) {
     res.status(500).json({ message: "Failed to retrieve pictures" })
   }
+
+
 });
 
 // Insert new picture into DB
