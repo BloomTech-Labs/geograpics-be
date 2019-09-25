@@ -6,7 +6,26 @@ const axios = require('axios')
 
 // server route = /map
 
-router.get("/",  async (req, resToClient) => {
+router.get("/",  async (req, res) => {
+  loggedInUsername = req.loggedInUsername;
+
+  try {
+    const user = await userHelper.findUserByUsername(loggedInUsername)
+    const pictures = await helper.getPictures(user.id)
+    const nested = {...user, pictures: pictures}
+
+    if(user.length === 0) {
+      res.status(404).json({ message: "Failed to find user"})
+    } else {
+        res.status(200).json(nested)
+    }
+
+  } catch (err) {
+    res.status(500).json({ message: "Failed to retrieve pictures" })
+  }
+});
+
+router.get("/update",  async (req, resToClient) => {
   loggedInUsername = req.loggedInUsername;
 
   try {
