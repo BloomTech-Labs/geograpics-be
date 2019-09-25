@@ -57,21 +57,9 @@ router.get("/",  async (req, resToClient) => {
           console.log(err)
         })
 
-
-    // const pictures = await helper.getPictures(user.id)
-    // const nested = {...user, pictures: pictures}
-
-    // if(user.length === 0) {
-    //   res.status(404).json({ message: "Failed to find user"})
-    // } else {
-    //     res.status(200).json(nested)
-    // }
-
   } catch (err) {
     resToClient.status(500).json({ message: "Failed to retrieve pictures" })
   }
-
-
 });
 
 // Insert new picture into DB
