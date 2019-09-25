@@ -38,9 +38,7 @@ router.get("/update", async (req, resToClient) => {
 
     // api to Instagram endpoint w/access code
     axios
-      .get(
-        `https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`
-      )
+      .get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`)
       .then(resFromInstagram => {
         // Formats incoming data from instagram into a shape our db can use
         let data = resFromInstagram.data.data;
@@ -50,9 +48,7 @@ router.get("/update", async (req, resToClient) => {
             user_id: user.id,
             // Instagram API omits picture.location *entirely* if there's no location data
             // This inserts picture.location w/ "absent" so it doesn't break the code
-            longitude: !picture.location
-              ? "absent"
-              : picture.location.longitude,
+            longitude: !picture.location ? "absent" : picture.location.longitude,
             latitude: !picture.location ? "absent" : picture.location.latitude,
             thumbnail: picture.images.thumbnail.url,
             standard_resolution: picture.images.standard_resolution.url,
@@ -62,9 +58,7 @@ router.get("/update", async (req, resToClient) => {
           });
         });
         // filters out any pictures with "absent"
-        const filteredArray = newPictureArray.filter(
-          picture => picture.longitude !== "absent"
-        );
+        const filteredArray = newPictureArray.filter(picture => picture.longitude !== "absent");
 
         if (filteredArray.length === 0) {
           resToClient.status(400).json({
@@ -73,11 +67,9 @@ router.get("/update", async (req, resToClient) => {
         } else {
           // insert pic data into Picture Table
           helper
-            .postNewPictureInfo(filteredArray)
+            .editPicture(user.id, filteredArray)
             .then(value => {
-              resToClient
-                .status(201)
-                .json({ ...user, pictures: filteredArray });
+              resToClient.status(201).json({ ...user, pictures: filteredArray });
             })
             .catch(err => {
               resToClient.status(400).json({ message: "Failure" });
@@ -149,9 +141,7 @@ router.delete("/refresh/", async (req, resDelToClient) => {
 
     // api to Instagram endpoint w/access code
     axios
-      .get(
-        `https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`
-      )
+      .get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`)
       .then(resFromInstagram => {
         // Formats incoming data from instagram into a shape our db can use
         let data = resFromInstagram.data.data;
@@ -171,9 +161,7 @@ router.delete("/refresh/", async (req, resDelToClient) => {
           });
         });
         // filters out any pictures with "absent"
-        const filteredArray = newPictureArray.filter(
-          picture => picture.longitude !== "absent"
-        );
+        const filteredArray = newPictureArray.filter(picture => picture.longitude !== "absent");
 
         if (filteredArray.length === 0) {
           resDelToClient.status(400).json({
@@ -184,9 +172,7 @@ router.delete("/refresh/", async (req, resDelToClient) => {
           helper
             .postNewPictureInfo(filteredArray)
             .then(value => {
-              resDelToClient
-                .status(201)
-                .json({ ...user, pictures: filteredArray });
+              resDelToClient.status(201).json({ ...user, pictures: filteredArray });
             })
             .catch(err => {
               resDelToClient.status(400).json({ message: "Failure" });
