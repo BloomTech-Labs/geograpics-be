@@ -29,9 +29,9 @@ function postNewPictureInfo(newPictureInfo) {
   return db("pictures").insert(newPictureInfo)
 }
 
-function editPicture(picID, changePicture) {
+function editPicture(userID, changePicture) {
   return db("pictures")
-    .where({ id: picID })
+    .where({ user_id: userID })
     .update(changePicture);
 }
 
