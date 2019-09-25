@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // server route = /map
 
-router.get("/",  async (req, res) => {
+router.get("/",  async (req, resToClient) => {
   loggedInUsername = req.loggedInUsername;
   console.log("Above the Try")
 
@@ -15,13 +15,13 @@ router.get("/",  async (req, res) => {
     const user = await userHelper.findUserByUsername(loggedInUsername)
 
     // get accesscode for user 
-    const accesscode = user.access_token 
+    const accesscode = user.access_token
 
     // api to Instagram endpoint w/access code
       axios.get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`)
-        .then(res => {
-          // console.log("This is the Response", res.data)
-          let data = res.data.data
+        .then(resFromInstagram => {
+  
+          let data = resFromInstagram.data.data
           const newPictureArray = data.map(picture => {
             return newPicObject = {
               media_id: picture.id,
@@ -35,14 +35,29 @@ router.get("/",  async (req, res) => {
               likes: picture.likes.count
             }
           })
-          console.log("This is the New Array of Picture Objects", newPictureArray)
+
+          const filteredArray = newPictureArray.filter(picture => picture.longitude !== 'absent')
+
+          if (filteredArray.length === 0){
+            resToClient.status(400).json({message: "User Doesn't Have any Geo-Location Data --- Sorry!"})
+          } else {
+              // insert pic data into Picture Table 
+              helper.postNewPictureInfo(filteredArray)
+              .then (value => {
+                console.log(value)
+                resToClient.status(201).json({message: "Success"})
+              })
+              .catch(err => {
+                console.log(err)
+                resToClient.status(400).json({message: "Failure"})
+              })
+          }
         })
         .catch(err => {
           console.log(err)
         })
 
-    // insert pic data into Picture Table 
-      // helper.postNewPictureInfo(newPicInfo, user.id)
+        console.log(finalArray)
 
 
     // const pictures = await helper.getPictures(user.id)
@@ -55,7 +70,7 @@ router.get("/",  async (req, res) => {
     // }
 
   } catch (err) {
-    res.status(500).json({ message: "Failed to retrieve pictures" })
+    resToClient.status(500).json({ message: "Failed to retrieve pictures" })
   }
 
 
