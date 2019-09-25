@@ -49,7 +49,7 @@ router.get("/",  async (req, resToClient) => {
               })
               .catch(err => {
                 console.log(err)
-                resToClient.status(400).json({message: "Failure"})
+                resToClient.status(400).json({message: "Failure", user, filteredArray})
               })
           }
         })
