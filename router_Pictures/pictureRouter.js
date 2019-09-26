@@ -47,10 +47,10 @@ router.get("/update", async (req, res) => {
       // Problem: How to compare data coming from Instagram to data in our database?
       // Multiple solutions from different team members:
 
-      // One line solution:
+      // One line solution: .find locates photos from Instagram that match our database.  The "!" flags it as false, so filter kicks it out
       // const latestPhotos = picFromInst.filter(pic1 => !userPhotos.find(photo => pic1.media_id === photo.media_id))
 
-      // Verbose solution:
+      // Verbose solution: findIndex returns -1 if id's match, get kicked out
       const latestPhotos = picFromInst.filter(picture => {
         let evalDB = userPhotos.findIndex(
           pic => pic.media_id === picture.media_id
