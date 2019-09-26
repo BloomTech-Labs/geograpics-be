@@ -35,13 +35,11 @@ router.get("/update", async (req, res) => {
     // runs if user is new and has nothing in Pictures table
     if (userPhotos.length === 0) {
       const lastIndex = await helper.postNewPictureInfo(picFromInst);
-      res
-        .status(201)
-        .json({
-          message: "Photos Added To DB",
-          ...user,
-          pictures: picFromInst
-        });
+      res.status(201).json({
+        message: "Photos Added To DB",
+        ...user,
+        pictures: picFromInst
+      });
     }
     // Runs if user has data in Pictures Table
     else {
@@ -53,15 +51,13 @@ router.get("/update", async (req, res) => {
 
       // Verbose solution: findIndex returns -1 if id's match, get kicked out
       const latestPhotos = picFromInst.filter(picture => {
-        let evalDB = userPhotos.findIndex(
-          pic => pic.media_id === picture.media_id
-        );
+        let evalDB = userPhotos.findIndex(pic => pic.media_id === picture.media_id);
         if (evalDB < 0) return picture;
       });
 
       // If no new photos on Instagram:
       if (latestPhotos.length === 0) {
-        res.status(200).json({ message: "There are No Photos to Update", ...user, pictures: userPhotos });
+        res.status(200).json({message: "There are No Photos to Update", ...user,pictures: userPhotos});
       }
       // If user has new photos on Instagram that aren't in the database
       else {
