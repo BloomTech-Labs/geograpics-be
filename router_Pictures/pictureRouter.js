@@ -45,6 +45,28 @@ router.get("/update", async (req, resToClient) => {
   }
 });
 
+router.get("/import", async (req, resToClient) => {
+  loggedInUsername = req.loggedInUsername;
+
+  try {
+    const user = await userHelper.findUserByUsername(loggedInUsername);
+    const accesscode = user.access_token;
+    // get new photos from instagram
+    const picFromInst = await helper.instaExport(accesscode, user.id);
+    // save new photos to DB
+helper
+    .postNewPictureInfo(picFromInst)
+    .then(newPicture => {
+      res.status(200).json({user, pictures: newPicture});
+    })
+    // get all photos for user (which should include the new stuff now)
+    // return all photos
+  } 
+  catch (err) {
+    resToClient.status(500).json({ message: "Failed to retrieve pictures" });
+  }
+});
+
 // Insert new picture into DB
 // sends new picture ID back
 router.post("/", (req, res) => {
