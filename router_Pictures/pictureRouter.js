@@ -60,7 +60,7 @@ router.get("/update", async (req, res) => {
 
       // If no new photos on Instagram:
       if (latestPhotos.length === 0) {
-        res.status(205).json({ message: "There are No Photos to Update" });
+        res.status(205).json({ message: "There are No Photos to Update", user, pictures: userPhotos });
       }
       // If user has new photos on Instagram that aren't in the database
       else {
