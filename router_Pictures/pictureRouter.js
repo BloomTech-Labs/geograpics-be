@@ -27,21 +27,44 @@ router.get("/", async (req, res) => {
 });
 
 // updates db with new Instagram data - doesn't delete
-router.get("/update", async (req, resToClient) => {
+router.get("/update", async (req, res) => {
   loggedInUsername = req.loggedInUsername;
 
   try {
+
     const user = await userHelper.findUserByUsername(loggedInUsername);
+
     const accesscode = user.access_token;
     // get new photos from instagram
-    const picFromInst = await helper.instaExport(accesscode, user.id);
-    // save new photos to DB
+    const picFromInst = await helper.instaImport(accesscode, user.id);
+    // console.log("From InstaGram", picFromInst)
+    
+    const userPhotos = await helper.getPictures(user.id);
+    // console.log("From User's Table", userPhotos)
 
-    // get all photos for user (which should include the new stuff now)
-    // return all photos
+    if (userPhotos.length === 0) {
+      const lastIndex = await helper.postNewPictureInfo(picFromInst)
+      res.status(201).json({message: "Photos Added To DB", ...user, pictures: picFromInst})
+    }
+    else {
+      // const latestPhotos = picFromInst.filter(pic1 => !userPhotos.find(photo => pic1.media_id === photo.media_id))
+
+      const latestPhotos = picFromInst.filter( picture => {
+        let evalDB = userPhotos.findIndex( pic =>  pic.media_id === picture.media_id );
+        if ( evalDB < 0) return picture;
+      })
+
+      if(latestPhotos.length === 0) {
+        res.status(205).json({message: "There are No Photos to Update"})
+      } else {
+      console.log(latestPhotos)
+      const lastIndex2 = await helper.postNewPictureInfo(latestPhotos)
+      res.status(201).json({message: "User's Latest Photos From Instagram", ...user, pictures: latestPhotos})
+      }
+    }
   } 
   catch (err) {
-    resToClient.status(500).json({ message: "Failed to retrieve pictures" });
+    res.status(500).json({ message: "Failed to retrieve pictures" });
   }
 });
 
@@ -76,7 +99,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-// Delete picture - id must be in URL parameter string
+// Delete picture
 router.delete("/refresh/", async (req, resDelToClient) => {
   loggedInUsername = req.loggedInUsername;
 
@@ -88,9 +111,12 @@ router.delete("/refresh/", async (req, resDelToClient) => {
     // get accesscode for user
     const accesscode = user.access_token;
     // api to Instagram endpoint w/access code
-    const pictures = await helper.instaExport(accesscode, user.id);
+    const pictures = await helper.instaImport(accesscode, user.id);
     // send pictures in format front end wants
-    res.status(200).json({ ...user, pictures: pictures });
+  
+    const lastIndex = await helper.postNewPictureInfo(pictures)
+
+    resDelToClient.status(200).json({ ...user, pictures: pictures });
   } 
   catch (err) {
     resDelToClient.status(500).json({ message: "Failed to retrieve pictures" });

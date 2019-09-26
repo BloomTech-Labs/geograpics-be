@@ -8,7 +8,7 @@ module.exports = {
   deletePicture,
   getPictures,
   getPicsWithUserInfo,
-  instaExport
+  instaImport
 };
 
 // Retrieve all pictures from user table
@@ -43,7 +43,7 @@ function deletePicture(userID) {
     .del();
 }
 
-async function instaExport (accessCode, userId) {
+async function instaImport (accessCode, userId) {
   return await axios.get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accessCode}`)
   .then(resFromInstagram => {
     // Formats incoming data from instagram into a shape our db can use
@@ -59,7 +59,7 @@ async function instaExport (accessCode, userId) {
         thumbnail: picture.images.thumbnail.url,
         standard_resolution: picture.images.standard_resolution.url,
         created_time: picture.created_time,
-        caption: picture.caption.text,
+        caption: !picture.caption ? '' : picture.caption.text,
         likes: picture.likes.count
       });
     });
