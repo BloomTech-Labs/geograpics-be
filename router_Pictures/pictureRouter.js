@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const helper = require("./pictureHelper");
 const userHelper = require("../router_User/userHelper");
-const axios = require("axios");
-const serverCalls = require("../services/");
+const serverCalls = require("./pictureHelper");
 
 // server route = /map
 
@@ -37,9 +36,6 @@ router.get("/update", async (req, resToClient) => {
     // save new photos to DB
     // get all photos for user (which should include the new stuff now)
     // return all photos
-
-
-  
   } catch (err) {
     resToClient.status(500).json({ message: "Failed to retrieve pictures" });
   }
@@ -84,6 +80,7 @@ router.delete("/refresh/", async (req, resDelToClient) => {
     // search users table by Insta username (done)
     const user = await userHelper.findUserByUsername(loggedInUsername);
 
+    // Wipes existing picture table for user
     const deleted = await helper.deletePicture(user.id);
 
     // get accesscode for user
@@ -91,8 +88,8 @@ router.delete("/refresh/", async (req, resDelToClient) => {
 
     // api to Instagram endpoint w/access code
     const pictures = await serverCalls.instaExport(accesscode, user.id);
-
-  } catch (err) {
+  } 
+  catch (err) {
     // .catch for the router.get request
     resDelToClient.status(500).json({ message: "Failed to retrieve pictures" });
   }
