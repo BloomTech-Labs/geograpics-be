@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const helper = require("./pictureHelper");
 const userHelper = require("../router_User/userHelper");
-const serverCalls = require("./pictureHelper");
 
 // server route = /map
 
@@ -32,7 +31,7 @@ router.get("/update", async (req, resToClient) => {
   try {
     const user = await userHelper.findUserByUsername(loggedInUsername);
     const accesscode = user.access_token;
-    const picFromInst = await serverCalls.instaExport(accesscode, user.id); // get new photos from instagram
+    const picFromInst = await helper.instaExport(accesscode, user.id); // get new photos from instagram
     // save new photos to DB
     // get all photos for user (which should include the new stuff now)
     // return all photos
@@ -87,7 +86,7 @@ router.delete("/refresh/", async (req, resDelToClient) => {
     const accesscode = user.access_token;
 
     // api to Instagram endpoint w/access code
-    const pictures = await serverCalls.instaExport(accesscode, user.id);
+    const pictures = await helper.instaExport(accesscode, user.id);
   } 
   catch (err) {
     // .catch for the router.get request
