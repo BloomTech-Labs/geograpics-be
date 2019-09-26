@@ -3,6 +3,7 @@ const router = express.Router();
 const helper = require("./pictureHelper");
 const userHelper = require("../router_User/userHelper");
 const axios = require("axios");
+const serverCalls = require("../services/");
 
 // server route = /map
 
@@ -30,68 +31,16 @@ router.get("/update", async (req, resToClient) => {
   loggedInUsername = req.loggedInUsername;
 
   try {
-    // search users table by Insta username (done)
     const user = await userHelper.findUserByUsername(loggedInUsername);
-
-    // get accesscode for user
     const accesscode = user.access_token;
+    const picFromInst = await serverCalls.instaExport(accesscode, user.id); // get new photos from instagram
+    // save new photos to DB
+    // get all photos for user (which should include the new stuff now)
+    // return all photos
 
-    // api to Instagram endpoint w/access code
-    axios
-      .get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`)
-      .then(resFromInstagram => {
-        // Formats incoming data from instagram into a shape our db can use
-        let data = resFromInstagram.data.data;
-        const newPictureArray = data.map(picture => {
-          return (newPicObject = {
-            media_id: picture.id,
-            user_id: user.id,
-            // Instagram API omits picture.location *entirely* if there's no location data
-            // This inserts picture.location w/ "absent" so it doesn't break the code
-            longitude: !picture.location ? "absent" : picture.location.longitude,
-            latitude: !picture.location ? "absent" : picture.location.latitude,
-            thumbnail: picture.images.thumbnail.url,
-            standard_resolution: picture.images.standard_resolution.url,
-            created_time: picture.created_time,
-            caption: picture.caption.text,
-            likes: picture.likes.count
-          });
-        });
-        // filters out any pictures with "absent"
-        const filteredArray = newPictureArray.filter(picture => picture.longitude !== "absent");
 
-        if (filteredArray.length === 0) {
-          resToClient.status(400).json({
-            message: "User Doesn't Have any Geo-Location Data --- Sorry!"
-          });
-        } else {
-          // insert pic data into Picture Table
-          helper
-            .editPicture(user.id, filteredArray)
-            .then(value => {
-              resToClient.status(201).json({ ...user, pictures: filteredArray });
-            })
-            .catch(err => {
-              resToClient.status(400).json({ message: "Failure" });
-            });
-        }
-      })
-
-      //.catch for the axios call
-      .catch(err => {
-        console.log(err);
-      });
-
-    // const pictures = await helper.getPictures(user.id)
-    // const nested = {...user, pictures: pictures}
-
-    // if(user.length === 0) {
-    //   res.status(404).json({ message: "Failed to find user"})
-    // } else {
-    //     res.status(200).json(nested)
-    // }
+  
   } catch (err) {
-    // .catch for the router.get request
     resToClient.status(500).json({ message: "Failed to retrieve pictures" });
   }
 });
@@ -136,63 +85,13 @@ router.delete("/refresh/", async (req, resDelToClient) => {
     const user = await userHelper.findUserByUsername(loggedInUsername);
 
     const deleted = await helper.deletePicture(user.id);
+
     // get accesscode for user
     const accesscode = user.access_token;
 
     // api to Instagram endpoint w/access code
-    axios
-      .get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accesscode}`)
-      .then(resFromInstagram => {
-        // Formats incoming data from instagram into a shape our db can use
-        let data = resFromInstagram.data.data;
-        const newPictureArray = data.map(picture => {
-          return (newPicObject = {
-            media_id: picture.id,
-            user_id: user.id,
-            // Instagram API omits picture.location *entirely* if there's no location data
-            // This inserts picture.location w/ "absent" so it doesn't break the code
-            longitude: !picture.location ? "absent" : picture.location.longitude,
-            latitude: !picture.location ? "absent" : picture.location.latitude,
-            thumbnail: picture.images.thumbnail.url,
-            standard_resolution: picture.images.standard_resolution.url,
-            created_time: picture.created_time,
-            caption: picture.caption.text,
-            likes: picture.likes.count
-          });
-        });
-        // filters out any pictures with "absent"
-        const filteredArray = newPictureArray.filter(picture => picture.longitude !== "absent");
+    const pictures = await serverCalls.instaExport(accesscode, user.id);
 
-        if (filteredArray.length === 0) {
-          resDelToClient.status(400).json({
-            message: "User Doesn't Have any Geo-Location Data --- Sorry!"
-          });
-        } else {
-          // insert pic data into Picture Table
-          helper
-            .postNewPictureInfo(filteredArray)
-            .then(value => {
-              resDelToClient.status(201).json({ ...user, pictures: filteredArray });
-            })
-            .catch(err => {
-              resDelToClient.status(400).json({ message: "Failure" });
-            });
-        }
-      })
-
-      //.catch for the axios call
-      .catch(err => {
-        console.log(err);
-      });
-
-    // const pictures = await helper.getPictures(user.id)
-    // const nested = {...user, pictures: pictures}
-
-    // if(user.length === 0) {
-    //   res.status(404).json({ message: "Failed to find user"})
-    // } else {
-    //     res.status(200).json(nested)
-    // }
   } catch (err) {
     // .catch for the router.get request
     resDelToClient.status(500).json({ message: "Failed to retrieve pictures" });
