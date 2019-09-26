@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const helper = require("./pictureHelper");
 const userHelper = require("../router_User/userHelper");
-const axios = require("axios");
-const serverCalls = require("../services/");
 
 // server route = /map
 
@@ -18,10 +16,12 @@ router.get("/", async (req, res) => {
 
     if (user.length === 0) {
       res.status(404).json({ message: "Failed to find user" });
-    } else {
+    } 
+    else {
       res.status(200).json(nested);
     }
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({ message: "Failed to retrieve pictures" });
   }
 });
@@ -33,14 +33,14 @@ router.get("/update", async (req, resToClient) => {
   try {
     const user = await userHelper.findUserByUsername(loggedInUsername);
     const accesscode = user.access_token;
-    const picFromInst = await serverCalls.instaExport(accesscode, user.id); // get new photos from instagram
+    // get new photos from instagram
+    const picFromInst = await helper.instaExport(accesscode, user.id);
     // save new photos to DB
+
     // get all photos for user (which should include the new stuff now)
     // return all photos
-
-
-  
-  } catch (err) {
+  } 
+  catch (err) {
     resToClient.status(500).json({ message: "Failed to retrieve pictures" });
   }
 });
@@ -83,17 +83,16 @@ router.delete("/refresh/", async (req, resDelToClient) => {
   try {
     // search users table by Insta username (done)
     const user = await userHelper.findUserByUsername(loggedInUsername);
-
+    // Wipes existing picture table for user
     const deleted = await helper.deletePicture(user.id);
-
     // get accesscode for user
     const accesscode = user.access_token;
-
     // api to Instagram endpoint w/access code
-    const pictures = await serverCalls.instaExport(accesscode, user.id);
-
-  } catch (err) {
-    // .catch for the router.get request
+    const pictures = await helper.instaExport(accesscode, user.id);
+    // send pictures in format front end wants
+    res.status(200).json({ ...user, pictures: pictures });
+  } 
+  catch (err) {
     resDelToClient.status(500).json({ message: "Failed to retrieve pictures" });
   }
 });
