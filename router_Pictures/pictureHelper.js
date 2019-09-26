@@ -53,7 +53,7 @@ async function instaExport (accessCode, userId) {
         media_id: picture.id,
         user_id: userId,
         // Instagram API omits picture.location *entirely* if there's no location data
-        // This inserts picture.location w/ "absent" so it doesn't break the code
+        // This inserts picture.location so it doesn't break the code
         longitude: picture.location ? picture.location.longitude : null,
         latitude: picture.location ? picture.location.latitude : null,
         thumbnail: picture.images.thumbnail.url,
