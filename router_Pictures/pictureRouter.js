@@ -30,6 +30,7 @@ router.get("/update", async (req, res) => {
     const accesscode = user.access_token;
     // get new photos from instagram
     const picFromInst = await helper.instaImport(accesscode, user.id);
+    // get existing photos from db
     const userPhotos = await helper.getPictures(user.id);
     // runs if user is new and has nothing in Pictures table
     if (userPhotos.length === 0) {
@@ -60,7 +61,7 @@ router.get("/update", async (req, res) => {
 
       // If no new photos on Instagram:
       if (latestPhotos.length === 0) {
-        res.status(205).json({ message: "There are No Photos to Update", user, pictures: userPhotos });
+        res.status(200).json({ message: "There are No Photos to Update", ...user, pictures: userPhotos });
       }
       // If user has new photos on Instagram that aren't in the database
       else {
