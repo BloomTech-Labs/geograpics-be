@@ -45,7 +45,7 @@ router.get(
   passport.authenticate("instagram", { session: false }),
   (req, res) => {
     const token = gentoken(req.user);
-    console.log(token)
+    // console.log(token)
     // helper.findUserById queries db to check and see if user exists
     helper
       .findUserById(req.user.insta_id)
@@ -56,13 +56,13 @@ router.get(
 
               //     Exists in DB                       Has Email
               //Need to add to logic below --> && user.email !== null
-        if (user.insta_id === req.user.insta_id) {
+        if (user.email) {
           res.redirect(
             `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=true`
           );
         }else{
           res.redirect(
-            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${newUser.id}&inDatabaseHaveEmail=false`
+            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=false`
           );
         }
       })

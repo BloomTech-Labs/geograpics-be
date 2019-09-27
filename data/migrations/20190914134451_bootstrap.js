@@ -24,7 +24,7 @@ exports.up = function(knex) {
   })
   .createTable('pictures', t => {
     t.increments();
-    t.biginteger('media_id')
+    t.string('media_id', 255)
       .notNullable()
       .unique();
     t.biginteger('user_id')
