@@ -100,7 +100,7 @@ router.post("/", (req, res) => {
 // });
 
 // Refresh/Sync with Instagram
-router.delete("/refresh/", async (req, resDelToClient) => {
+router.delete("/refresh", async (req, resDelToClient) => {
   loggedInUsername = req.loggedInUsername;
 
   try {

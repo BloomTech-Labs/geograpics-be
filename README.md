@@ -11,7 +11,18 @@
 * Full CRUD functionality has been created at two endpoints/routers
     - /users and /map
     - functions for user router are found in userHelper.js, functions for picture router are found in pictureHelper.js
-    - Both endpoints are behind a token checking authentication file
+    - Both endpoints are behind a token checking authentication file.
+
+* User Router functions:
+    - POST at "/users": insert new user into db
+    - PUT at "/:id" - edit existing user info
+    - DELETE at "/:id" - delete user
+
+* Picture Router Functions:
+    - GET at "/map" - retrieve list of user's pictures from local database; token required on incoming request
+    - GET at "/map/update" - retrieve list of user's pictures from Instagram.  If new user, add to database.  If existing user, compare Instagram image data to local database & add new pictures.  Does not delete any old/outdated picture data on local database that user deleted off Instagram
+    - POST at "/map" - post a single datapoint to a user; token required on incoming request
+    - DELETE at "/map/refresh" - reads user identity off incoming token, wipes local database of all their picture data, then downloads user picture data from Instagram; a way to sync local database with Instagram if user has deleted pictures off Instagram
 
 * A third router, authRouter, is for Passport & Instagram to verify users
     - Users first hit the /instagram router endpoint, and pass through the passport.authenticate function
