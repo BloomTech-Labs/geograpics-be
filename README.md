@@ -4,7 +4,7 @@
 
 * Users come to the site and are routed through Instagram's verification/login process, using passport.  Once verified, Instagram sends the user's data to the database
 
-* Two tables have been created - users and pictures. 
+* Two tables have been created - users and pictures
     - Users table stores users who have passed through the Passport/Instagram authentication process
     - Pictures table stores their data from Instagram once they've authorized the Geograpics app in their Instagram file
 
