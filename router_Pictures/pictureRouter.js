@@ -28,7 +28,7 @@ router.get("/update", async (req, res) => {
   try {
     const user = await userHelper.findUserByUsername(loggedInUsername);
     const accesscode = user.access_token;
-    delete user.access_token
+    delete user.access_token;
     // get new photos from instagram
     const picFromInst = await helper.instaImport(accesscode, user.id);
     // get existing photos from db
@@ -50,20 +50,34 @@ router.get("/update", async (req, res) => {
       // One line solution: .find locates photos from Instagram that match our database.  The "!" flags it as false, so filter kicks it out
       // const latestPhotos = picFromInst.filter(pic1 => !userPhotos.find(photo => pic1.media_id === photo.media_id))
 
-      // Verbose solution: findIndex returns -1 if id's match, get kicked out
+      // Verbose solution: findIndex returns -1 if id's match, gets kicked out
       const latestPhotos = picFromInst.filter(picture => {
-        let evalDB = userPhotos.findIndex(pic => pic.media_id === picture.media_id);
+        let evalDB = userPhotos.findIndex(
+          pic => pic.media_id === picture.media_id
+        );
         if (evalDB < 0) return picture;
       });
 
       // If no new photos on Instagram:
       if (latestPhotos.length === 0) {
-        res.status(200).json({message: "There are No Photos to Update", ...user,pictures: userPhotos});
+        res
+          .status(200)
+          .json({
+            message: "There are No Photos to Update",
+            ...user,
+            pictures: userPhotos
+          });
       }
       // If user has new photos on Instagram that aren't in the database
       else {
         const lastIndex2 = await helper.postNewPictureInfo(latestPhotos);
-        res.status(201).json({message: "User's Latest Photos From Instagram", ...user, pictures: latestPhotos});
+        res
+          .status(201)
+          .json({
+            message: "User's Latest Photos From Instagram",
+            ...user,
+            pictures: latestPhotos
+          });
       }
     }
   } catch (err) {
@@ -73,19 +87,22 @@ router.get("/update", async (req, res) => {
 
 // Insert new picture into DB
 // sends new picture ID back
-router.post("/", (req, res) => {
-  let newPictureInfo = req.body;
-  helper
-    .postNewPictureInfo(newPictureInfo)
-    .then(newPicture => {
-      res.status(200).json(newPicture);
-    })
-    .catch(error => {
-      res.status(500).json({ Error: "Failed to add new picture info" });
-    });
-});
 
-// Currently un-used
+// Currently unused----
+
+// router.post("/", (req, res) => {
+//   let newPictureInfo = req.body;
+//   helper
+//     .postNewPictureInfo(newPictureInfo)
+//     .then(newPicture => {
+//       res.status(200).json(newPicture);
+//     })
+//     .catch(error => {
+//       res.status(500).json({ Error: "Failed to add new picture info" });
+//     });
+// });
+
+// Currently un-used----
 
 // router.put("/:id", (req, res) => {
 //   let id = req.params.id;

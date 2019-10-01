@@ -45,37 +45,33 @@ router.get(
   passport.authenticate("instagram", { session: false }),
   (req, res) => {
     const token = gentoken(req.user);
-    // console.log(token)
     // helper.findUserById queries db to check and see if user exists
     helper
       .findUserById(req.user.insta_id)
       // If user is found, user object return is that users entire row from the users table
       .then(user => {
         // If user exists, the insta_id on the req body will match the insta_id from the users table
-        // and redirect them to the dashboard
-
-              //     Exists in DB                       Has Email
-              //Need to add to logic below --> && user.email !== null
+        // and redirect them to the front end dashboard
         if (user.email) {
           res.redirect(
             `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=true`
-          );
+          )
+        // If user exists but doesn't have email, redirect to preloader, set to register/2 on front end
         }else{
           res.redirect(
             `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=false`
           );
         }
       })
-      .catch(err => {
+
         // If user does not exist in the users table, they're automatically added by helper.postNewUser
-        // This works because this is only triggered after Instagram & passport verify the user - they wouldn't hit
-        // this function unless they were already an Instagram user
 
         //  Problem: Front end needs the newUserID/primary key
-        // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't,
-        // it sends back an object-object full of data about what the server just did, such as SQL Insert,
-        // number of rows added, and date of addition - generally useless
+          // SQLite3 by default returns the newUser's primary key ID, but postgres doesn't,
+          // it sends back an object-object full of data about what the server just did, such as SQL Insert,
+          // number of rows added, and date of addition - generally useless
 
+      .catch(err => {
         //  Solution: So for a postgress db, a second db call is needed to find the newUser & return their userID, which front-end needs
         helper
           .postNewUser(req.user)
