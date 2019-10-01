@@ -5,7 +5,7 @@ const helper = require("./userHelper");
 // server route = /users
 
 // Retrieve list of all users
-// Comment out before production
+// Comment out before production---
 // router.get("/", (req, res) => {
 //   helper
 //     .findAllUsers()
