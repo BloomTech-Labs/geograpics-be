@@ -40,7 +40,9 @@
     "pg": "^7.12.1",
     "pu": "^3.1.0",
     "pug": "^2.0.4",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "swagger-jsdoc": "^3.4.0",
+    "swagger-ui-express": "^4.1.1"
   },
   "jest": {
     "testEnvironment": "node"

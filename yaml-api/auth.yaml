@@ -1,0 +1,36 @@
+paths:
+ /auth/instagram:
+   get:
+     summary: Endpoint to Register/Login with Instagram
+     description: This endpoint will direct the user to Instagram for Authentication
+     tags:
+       - Authentication
+     consumes:
+       - "application/json"
+     produces:
+       - "application/json"
+    #  parameters:
+    #    - in: body
+    #      name: body
+    #      description: "Data Needed to Register"
+    #      required: true
+    #      schema:
+    #        type: ojbect
+    #        properties:
+    #          name:
+    #            type: string
+    #          email:
+    #            type: string
+    #          username:
+    #            type: string
+    #          password:
+    #            type: string
+    #            format: password
+     responses:
+       200:
+         description: Authentication Successful
+        #  schema:
+        #    type: object
+        #    $ref: '#/definitions/Professor'
+       500:
+          description: Could Not Authenticate

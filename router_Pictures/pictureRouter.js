@@ -28,6 +28,7 @@ router.get("/update", async (req, res) => {
   try {
     const user = await userHelper.findUserByUsername(loggedInUsername);
     const accesscode = user.access_token;
+    delete user.access_token
     // get new photos from instagram
     const picFromInst = await helper.instaImport(accesscode, user.id);
     // get existing photos from db
