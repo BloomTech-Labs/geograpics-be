@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Failed to retrieve pictures" });
   }
-});
+})
 
 // updates db with new Instagram data - doesn't delete
 router.get("/update", async (req, res) => {
@@ -56,7 +56,7 @@ router.get("/update", async (req, res) => {
           pic => pic.media_id === picture.media_id
         );
         if (evalDB < 0) return picture;
-      });
+      })
 
       // If no new photos on Instagram:
       if (latestPhotos.length === 0) {
