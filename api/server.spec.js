@@ -32,7 +32,7 @@ describe("Picture CRUD tests", () => {
 
   it("Resync picture table without proper token", async () => {
     return request(server)
-      .put(`/map/refresh`)
+      .delete(`/map/refresh`)
       .send({
         authorization: "abc123"
       })
