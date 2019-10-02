@@ -38,6 +38,7 @@
     "passport": "^0.4.0",
     "passport-instagram": "^1.0.0",
     "pg": "^7.12.1",
+    "pu": "^3.1.0",
     "pug": "^2.0.4",
     "sqlite3": "^4.1.0",
     "swagger-jsdoc": "^3.4.0",
