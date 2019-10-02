@@ -10,10 +10,11 @@
 
 * Partial/As-Needed CRUD functionality has been created at two endpoints/routers
     - /users and /map
+    - /users has been commented out - currently unused, but useful for future releases
     - functions for user router are found in userHelper.js, functions for picture router are found in pictureHelper.js
     - Both endpoints are behind a token checking authentication file.
 
-* User Router functions:
+* User Router functions (currently commented out due to non-use):
     - POST at "/users": insert new user into db
     - PUT at "/:id" - edit existing user info
     - DELETE at "/:id" - delete user
