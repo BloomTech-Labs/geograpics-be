@@ -33,20 +33,18 @@ const helper = require("./userHelper");
 //     });
 // });
 
-// Commented out - never used ----
-
-// router.put("/:id", (req, res) => {
-//   let id = req.params.id;
-//   let editInfo = req.body;
-//   helper
-//     .editUser(id, editInfo)
-//     .then(edited => {
-//       res.status(200).json(edited);
-//     })
-//     .catch(error => {
-//       res.status(500).json({ Error: "Failed to edit user" });
-//     });
-// });
+router.put("/:id", (req, res) => {
+  let id = req.params.id;
+  let editInfo = req.body;
+  helper
+    .editUser(id, editInfo)
+    .then(edited => {
+      res.status(200).json(edited);
+    })
+    .catch(error => {
+      res.status(500).json({ Error: "Failed to edit user" });
+    });
+});
 
 // Delete user - id must be in URL parameter string
 
