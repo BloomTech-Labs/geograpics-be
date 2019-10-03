@@ -1,0 +1,126 @@
+paths:
+  /map:
+   get:
+     summary: Get a List of User's Photo (Token Required)
+     security:
+       - JWT: []
+     description: Return List of Pictures (by logged in User) from local Database. 
+     tags:
+       - Pictures
+     consumes:
+       - "application/json"
+     produces:
+       - "application/json"
+     responses:
+       200:
+         description: Object with User Info and pictures property
+         schema:
+           type: object
+           $ref: '#/definitions/PictureWithUserInfo'
+       401:
+         description: Invalid Token
+       404:
+         description: Failed to Find User
+       500:
+         description: Failed to retrieve pictures
+
+  /map/update:
+   get:
+     summary: Get Latest Photos From Instagram (Token Required)
+     security:
+       - JWT: []
+     description: Returns Picture Object that only contain most recent photos added to Instagram.  Also inserts updated data to DB. 
+     tags:
+       - Pictures
+     consumes:
+       - "application/json"
+     produces:
+       - "application/json"
+     responses:
+       201:
+         description: Object with User Info and pictures property - Photos Added To DB
+         schema:
+           type: object
+           $ref: '#/definitions/PictureWithUserInfo'
+       200:
+         description: There are No Photos to Update
+       500:
+         description: Failed to retrieve pictures
+
+  /map/refresh:
+   delete:
+     summary: Delete Pictures and adds Most Recent Data from Instagram (Token Required)
+     security:
+       - JWT: []
+     description: This endpoint is a refresh.  User's picture data will be deleted and populated with most Recent Data from Instagram. 
+     tags:
+       - Pictures
+     consumes:
+       - "application/json"
+     produces:
+       - "application/json"
+     responses:
+       200:
+         description: Returns Most recent Data from Instagram 
+         schema:
+           type: object
+           $ref: '#/definitions/PictureWithUserInfo'
+       500:
+         description: Failed to retrieve pictures
+
+
+definition:
+  PictureWithUserInfo:
+    properties:
+      id:
+        type: integer
+      insta_id:
+        type: string
+      private:
+        type: boolean          
+      username:
+        type: string          
+      profile_pic:
+        type: string                            
+      full_name:
+        type: string                
+      bio:
+        type: string                
+      website:
+        type: string                
+      is_business:
+        type: boolean                
+      email:
+        type: string                
+      pictures:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            media_id:
+              type: string
+            user_id:
+              type: integer
+            longitude:
+              type: integer
+            latitude:
+              type: integer
+            thumbnail:
+              type: string
+            standard_resolution:
+              type: string                
+            created_time:
+              type: string
+              format: date                
+            caption:
+              type: string                
+            likes:
+              type: integer                
+      required:
+        - id
+        - insta_id
+        - private
+        - username
+        - email

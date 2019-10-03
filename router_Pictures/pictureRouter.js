@@ -10,6 +10,7 @@ router.get("/", async (req, res) => {
   loggedInUsername = req.loggedInUsername;
   try {
     const user = await userHelper.findUserByUsername(loggedInUsername);
+    delete user.access_token
     const pictures = await helper.getPictures(user.id);
     const nested = { ...user, pictures: pictures };
     if (user.length === 0) {
