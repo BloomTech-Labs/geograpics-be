@@ -41,6 +41,7 @@ function deletePicture(userID) {
     .del();
 }
 
+// Axios call to Instagram; formats incoming data to shape database can use
 async function instaImport(accessCode, userId) {
   return await axios
     .get(

@@ -1,7 +1,7 @@
 {
   "name": "geograpics-be",
   "version": "1.0.0",
-  "description": "🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.",
+  "description": "an app to help travel bloggers arrange their trip photos",
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
@@ -38,9 +38,10 @@
     "passport": "^0.4.0",
     "passport-instagram": "^1.0.0",
     "pg": "^7.12.1",
-    "pu": "^3.1.0",
     "pug": "^2.0.4",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "swagger-jsdoc": "^3.4.0",
+    "swagger-ui-express": "^4.1.1"
   },
   "jest": {
     "testEnvironment": "node"
