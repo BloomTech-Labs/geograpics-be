@@ -2,6 +2,7 @@
   "name": "geograpics-be",
   "version": "1.0.0",
   "description": "an app to help travel bloggers arrange their trip photos",
+  "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
     "test": "cross-env jest --watch",
