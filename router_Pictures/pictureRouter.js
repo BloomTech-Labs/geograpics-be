@@ -129,6 +129,7 @@ router.delete("/refresh", async (req, resDelToClient) => {
     const deleted = await helper.deletePicture(user.id);
     // get accesscode for user
     const accesscode = user.access_token;
+    delete user.access_token;
     // api to Instagram endpoint w/access code
     const pictures = await helper.instaImport(accesscode, user.id);
     // send pictures in format front end wants
