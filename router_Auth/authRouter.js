@@ -44,22 +44,25 @@ router.get(
   "/instagram/callback",
   passport.authenticate("instagram", { session: false }),
   (req, res) => {
-    const token = gentoken(req.user);
+    let reqUser = (process.env.DEMO_INSTA_ID && process.env.DEMO_USERNAME)
+      ? { insta_id: process.env.DEMO_INSTA_ID, username: process.env.DEMO_USERNAME }
+      : req.user;
+    const token = gentoken(reqUser);
     // helper.findUserById queries db to check and see if user exists
     helper
-      .findUserById(req.user.insta_id)
+      .findUserById(reqUser.insta_id)
       // If user is found, user object return is that users entire row from the users table
       .then(user => {
         // If user exists, the insta_id on the req body will match the insta_id from the users table
         // and redirect them to the front end dashboard
         if (user.email) {
           res.redirect(
-            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=true`
+            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${reqUser.username}&userid=${user.id}&inDatabaseHaveEmail=true`
           )
         // If user exists but doesn't have email, redirect to preloader, set to register/2 on front end
         }else{
           res.redirect(
-            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${req.user.username}&userid=${user.id}&inDatabaseHaveEmail=false`
+            `${process.env.FRONTENDURL}/preloader?token=${token}&username=${reqUser.username}&userid=${user.id}&inDatabaseHaveEmail=false`
           );
         }
       })
