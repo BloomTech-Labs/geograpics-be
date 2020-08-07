@@ -36,7 +36,7 @@ passport.use(
 );
 
 // Initial entry point of passport
-router.get("/instagram", passport.authenticate("instagram"));
+router.get("/instagram", passport.authenticate("instagram", { scope: user_profile, user_media }));
 
 // Where passport throws all requests
 // After Instagram login, user goes through this endpoint
